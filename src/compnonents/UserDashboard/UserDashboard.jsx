@@ -72,10 +72,10 @@ const UserDashboard = () => {
 
           // Fetch summary data from the /transactions/summary/:senderAccountId endpoint
           const response = await axios.get(
-            `http://localhost:5000/users/transactions/summary/${accountHolderData.Account_id}`
+            `http://localhoost:5000/users/transactions/summary/${accountHolderData.Account_id}`
           );
           setSummary(response.data);
-          const bal = await axios.get(`http://localhost:5000/admin/useraccount/${accountHolderData.Account_id}`)
+          const bal = await axios.get(`http://localhoost:5000/admin/useraccount/${accountHolderData.Account_id}`)
           setAvailableBalance(bal.data.Balance)
         }
       } catch (error) {

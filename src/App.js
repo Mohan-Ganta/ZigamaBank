@@ -11,6 +11,7 @@ import Recharge from './compnonents/MainComponents/Recharge/Recharge'
 import Payroll from './compnonents/MainComponents/Payroll/Payroll'
 import ForgotPassword from './compnonents/MainComponents/ForgotPassword/ForgotPassword'
 import RegistrationConfromation from "./compnonents/MainComponents/ConfirmationComponents/RegistrationConfromation"
+import LandingPage from "./compnonents/Landing/LandingPage"
 export default function App() {
   localStorage.setItem("loading","false")
   const [isloadinpage,setislodingpage] = useState(localStorage.setItem("loading","false"))
@@ -31,7 +32,8 @@ export default function App() {
      {isloadinpage === "false" &&  <Header/>}
       
       <Routes>
-            <Route path='/' element={<Tabss/>} />
+            <Route path='/' element={<LandingPage/>} />
+            <Route path='/register' element={<Tabss/>} />
             <Route path="/login" element={<Login />} />
             <Route path='/dashboard' element={<UserDashboard />} />
             <Route path='/fundtransfer' element={< Fundtransfer/>} />

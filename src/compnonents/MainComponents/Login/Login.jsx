@@ -17,7 +17,7 @@ const Login = () => {
   const navigator = useNavigate();
   const handleLogin = (e) => {
     e.preventDefault();
-    const url = `http://localhost:5000/users/login/${accountId}/${password}`;
+    const url = `http://localhoost:5000/users/login/${accountId}/${password}`;
     axios
       .get(url)
       .then((res) => {

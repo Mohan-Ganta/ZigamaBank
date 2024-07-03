@@ -58,10 +58,15 @@
    
 
     .Navbar .logo img {
-        width: 100px;
+        width: 250px;
+        height: 80px;
     }
     .Navbar .landing-nav-itms li {
         font-size: 15px; /* Default font size for desktop */
+    }
+    .Navbar{
+        width: 127vw;
+        overflow-x: hidden;
     }
 }
 
@@ -75,7 +80,8 @@
 @media (min-width: 1025px) {
     /* Styles for desktop */
     .Navbar {
-        padding: 0 20px; /* Adjust padding for desktop */
+        padding: 0 20px;
+        width: 100vw; /* Adjust padding for desktop */
     }
 
     .Navbar .logo img {

@@ -3,34 +3,35 @@ import Vesa from "../Images/Visaatm.png";
 import MasterCard from "../Images/mastercardatm.png";
 import Rupycard from "../Images/rupyatm.png";
 import Back from "../Images/atmback.png";
-import styles from "./AtmCards.module.css";
+import "./AtmCards.css";
 
 export default function AtmCards() {
   return (
     <div>
-      <h1 className={styles.subHedCard}>Cards Available Here</h1>
+       <h1 className="sub-hed-card">Cards Available Here</h1>
       <div>
-        <div className={styles.cardGroup}>
-          <article className={styles.card}>
-            <div className={styles.productImage}>
-              <img src={Vesa} alt="Visa Card" />
+        <div class="card-group">
+          <article class="acard">
+            <div class="product-image">
+              <img src={Vesa} alt="" />
             </div>
           </article>
-          <article className={styles.card}>
-            <div className={styles.productImage}>
-              <img src={MasterCard} alt="Master Card" />
+          <article class="acard">
+            <div class="product-image">
+              <img src={MasterCard} alt="" />
             </div>
           </article>
-          <article className={styles.card}>
-            <div className={styles.productImage}>
-              <img src={Rupycard} alt="Rupy Card" />
+          <article class="acard">
+            <div class="product-image">
+              <img src={Rupycard} alt="" />
             </div>
           </article>
-          <article className={styles.card}>
-            <div className={styles.productImage}>
-              <img src={Back} alt="ATM Back" />
+          <article class="acard">
+            <div class="product-image">
+              <img src={Back} alt="" />
             </div>
           </article>
+          
         </div>
       </div>
     </div>

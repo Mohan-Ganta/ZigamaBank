@@ -22,7 +22,7 @@ alert("clicked")
 alert(otp)
     if (otp === String(otpreceived)) {
       alert("otp verified")
-      const url = "http://localhost:5000/users/transaction";
+      const url = "http://localhoost:5000/users/transaction";
       const trdata = {
         "SenderAccountId" : accountuser.Account_id,
         "ReceiverAccountId" : accountID,
@@ -57,7 +57,7 @@ alert(otp)
   
   const getUserName = async ()=>{
     console.log("user id is " ,accountID)
-    const userurl = `http://localhost:5000/admin/useraccount/${accountID}`;
+    const userurl = `http://localhoost:5000/admin/useraccount/${accountID}`;
   // await axios.get(userurl)
   //   .then(user=>setAccountUer(user.data))
   //   .catch(err=>{setSenderError("No User Found with that Account Number")})
@@ -68,7 +68,7 @@ alert(otp)
     const email = accountuser.Email;
     // const email = user.Email;
     const username = accountuser.FirstName;
-    const url = `http://localhost:5000/sendpaymentotp/${email}/${username}/${amount}`
+    const url = `http://localhoost:5000/sendpaymentotp/${email}/${username}/${amount}`
     axios.get(url)
     .then(res=>{
       setOtpreceived(res.data.otp)

@@ -1,100 +1,62 @@
-import React, { useEffect } from 'react';
-import './Hero.css';
-import img1 from '../Images/1.png';
-import img2 from '../Images/2.png';
-import img3 from '../Images/3.png';
-import img4 from '../Images/4.png';
+import React from "react";
+import HeroImg from "../Images/heroimg.gif";
+import "./Hero.css";
+import AmazonLogo from '../Images/Amazonlogo.png';
+import Paytm from '../Images/Paytm_logo.png';
+import Microsoft from '../Images/Microsoft.webp';
+import Salesforce from '../Images/Salesforce.png';
+import Techwave from '../Images/Techwave.png';
+import Vts from '../Images/VTS.png'
+import './Scroll.css';
 
 export default function Hero() {
-    useEffect(() => {
-        let nextDom = document.getElementById('next');
-        let prevDom = document.getElementById('prev');
-        let carouselDom = document.querySelector('.carousel');
-        let SliderDom = carouselDom.querySelector('.list');
-        let thumbnailBorderDom = document.querySelector('.thumbnail');
-        let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll('.item');
-
-        thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
-        let timeRunning = 3000;
-        let timeAutoNext = 7000;
-
-        nextDom.onclick = function () {
-            showSlider('next');
-        };
-
-        prevDom.onclick = function () {
-            showSlider('prev');
-        };
-
-        let runTimeOut;
-        let runNextAuto = setTimeout(() => {
-            nextDom.click();
-        }, timeAutoNext);
-
-        function showSlider(type) {
-            let SliderItemsDom = SliderDom.querySelectorAll('.item');
-            let thumbnailItemsDom = document.querySelectorAll('.thumbnail .item');
-
-            if (type === 'next') {
-                SliderDom.appendChild(SliderItemsDom[0]);
-                thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
-                carouselDom.classList.add('next');
-            } else {
-                SliderDom.prepend(SliderItemsDom[SliderItemsDom.length - 1]);
-                thumbnailBorderDom.prepend(thumbnailItemsDom[thumbnailItemsDom.length - 1]);
-                carouselDom.classList.add('prev');
-            }
-
-            clearTimeout(runTimeOut);
-            runTimeOut = setTimeout(() => {
-                carouselDom.classList.remove('next');
-                carouselDom.classList.remove('prev');
-            }, timeRunning);
-
-            clearTimeout(runNextAuto);
-            runNextAuto = setTimeout(() => {
-                nextDom.click();
-            }, timeAutoNext);
-        }
-    }, []);
-
-    return (
-        <div className="carousel">
-            <div className="list">
-                <div className="item">
-                    <img src={img1} alt="" />
-                    {/* Example content removed for brevity */}
-                </div>
-                <div className="item">
-                    <img src={img2} alt="" />
-                </div>
-                <div className="item">
-                    <img src={img3} alt="" />
-                </div>
-                <div className="item">
-                    <img src={img4} alt="" />
-                </div>
-            </div>
-            <div className="thumbnail">
-                <div className="item">
-                    <img src={img1} alt="" />
-                </div>
-                <div className="item">
-                    <img src={img2} alt="" />
-                </div>
-                <div className="item">
-                    <img src={img3} alt="" />
-                </div>
-                <div className="item">
-                    <img src={img4} alt="" />
-                </div>
-            </div>
-
-            <div className="arrows">
-                <button id="prev">&lt;</button>
-                <button id="next">&gt;</button>
-            </div>
-            <div className="time"></div>
+  return (
+    <div className="hero-all">
+      <div className="hero-main-ctn">
+        <div className="hero-cnt">
+          <h1>ZIGMA</h1>
+          <p className="hero-ctn-p">The one and only Bank</p>
+          <h3>Safe and secure friend to transfer your money</h3>
+          <button><a href="/register">Open Account</a></button>
         </div>
-    );
+
+        <div className="hero-img">
+          <img src={HeroImg} alt="" />
+        </div>
+      </div>
+
+      <div class="barends">
+        <p>Trusted by the world’s leading organizations ↘︎</p>
+        <img
+          src={Vts}
+          alt=""
+        />
+        <img
+          src={AmazonLogo}
+          alt=""
+        />
+        <img
+          src={Paytm}
+          alt=""
+        />
+        <img
+          src={Microsoft}
+          alt=""
+        />
+        <img
+          src={Salesforce}
+          alt=""
+        />
+        <img
+          src={Techwave}
+          alt=""
+        />
+      </div>
+
+   
+
+      
+      
+    </div>
+  );
 }

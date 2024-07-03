@@ -1,35 +1,49 @@
-import React from 'react';
-import NavBar from '../NavBar';
-import Hero from './Hero';
-import About from './About';
-import './Lending.css'; // Assuming this file contains global styles
-import Services from './Services';
-import Footer from './Footer';
-import AtmCards from './AtmCards';
-import Scroll from './Scroll';
-import Status from './Status';
+import React from 'react'
+import NavBar from '../NavBar'
+import Hero from './Hero'
+import About from './About'
+import './Lending.css'
+import Services from './Services'
+import Footer from './Footer'
+import AtmCards from './AtmCards'
+import Scroll from './Scroll'
+import AccountTyps from './AccountTyps'
+import Billpays from './BillPay'
+
 
 export default function LandingPage() {
   return (
     <div className='main-page'>
-      <NavBar />
+      <NavBar/>
       {/* <button className='signin-btn-home'>SignIn to your Account</button> */}
-      <Hero />
-      <Scroll />
+      <Hero/>
+      <div className='Services'> 
+      <Services/>
+      </div>
+      <div className='about-all'>
       <div className='About'>
-        <About />
+      <About/>
       </div>
-      <Status />
-      <div className='Services'>
-        <Services />
       </div>
+     
+   
+      <div className='AccountTyps'>
+      <AccountTyps/>
+      </div>
+     
       <div className='Atmcards'>
-        <AtmCards />
+         <AtmCards/>
+         <Scroll/>
       </div>
-      <Scroll />
+      <Billpays/>
       <div className='Footer'>
-        <Footer />
+        <Footer/>
       </div>
+      
+      
+      
+      
     </div>
-  );
+    
+  )
 }

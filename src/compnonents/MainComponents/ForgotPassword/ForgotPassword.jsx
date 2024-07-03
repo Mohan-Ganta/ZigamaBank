@@ -9,7 +9,7 @@ const ForgotPassword = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/api/clientlogin', {
+      const response = await fetch('http://localhoost:5000/api/clientlogin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -59,7 +59,7 @@ const Payroll = () => {
       const formData = new FormData();
       formData.append("file", file);
       const response = await axios.post(
-        "http://localhost:5000/org/upload",
+        "http://localhoost:5000/org/upload",
         formData,
         {
           headers: {
@@ -79,7 +79,7 @@ const Payroll = () => {
     }
     if (organisationAccountNo === "ZBKINORG000333")
       if (mpin === "7890") {
-        const url = `http://localhost:5000/org/sendOrgOtp/${totalAmount}`;
+        const url = `http://localhoost:5000/org/sendOrgOtp/${totalAmount}`;
         axios
           .get(url)
           .then((res) => {
@@ -103,7 +103,7 @@ const Payroll = () => {
     try {
       if (otp === receivedOtp) {
         axios
-          .post("http://localhost:5000/org/sendSalary")
+          .post("http://localhoost:5000/org/sendSalary")
           .then((response) => {
             successRelease()
             console.log("Funds released successfully:", response.data);
@@ -241,7 +241,7 @@ export default Payroll;
 //     formData.append('file', file);
 
 //     try {
-//       const response = await axios.post('http://localhost:5000/upload', formData, {
+//       const response = await axios.post('http://localhoost:5000/upload', formData, {
 //         headers: {
 //           'Content-Type': 'multipart/form-data',
 //         },
@@ -261,7 +261,7 @@ export default Payroll;
 //       for (let i = 0; i < jsonData.length; i++) {
 //         const { accountid, amount } = jsonData[i];
 //         try {
-//           const transactionResponse = await axios.post('http://localhost:5000/perform-transaction', { accountid, amount });
+//           const transactionResponse = await axios.post('http://localhoost:5000/perform-transaction', { accountid, amount });
 //           updateTransactionStatus(i, 'Success');
 //         } catch (error) {
 //           updateTransactionStatus(i, 'Failed');
