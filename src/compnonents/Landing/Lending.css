@@ -1,0 +1,21 @@
+/* Global styles or styles for components within LandingPage */
+
+.main-page {
+    /* Your global styles for the main page container */
+  }
+  
+  .About {
+    display: flex;
+    align-items: center;
+    padding-top: 60px;
+    padding-bottom: 20px;
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .Services {
+    padding-top: 30px;
+  }
+  
+  /* Add more styles as needed for other components */
+  

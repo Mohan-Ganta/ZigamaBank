@@ -1,0 +1,64 @@
+.mainPage {
+    overflow-x: hidden;
+}
+
+.subHedCard {
+    text-align: center;
+    padding-top: 40px;
+}
+
+.cardGroup {
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 60px;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    border-radius: 30px;
+}
+
+.card {
+    transform: perspective(750px) translate3d(0px, 0px, -250px) rotateX(27deg) scale(0.9, 0.9);
+    transition: 0.4s ease-in-out transform, 0.4s ease-in-out box-shadow;
+    overflow: hidden;
+    position: relative;
+    margin-left: 0;
+}
+
+.card:not(:first-child) {
+    margin-left: 0;
+    margin-top: 20px;
+}
+
+.card:hover {
+    transform: translate(-8px, -16px) rotate(3deg);
+    box-shadow: 0 20px 40px -10px rgba(32, 195, 187, 0.5);
+}
+
+.productImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.productImage img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+    .cardGroup {
+        flex-wrap: wrap;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card:not(:first-child) {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
