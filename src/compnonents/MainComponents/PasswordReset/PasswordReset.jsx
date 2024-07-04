@@ -3,13 +3,14 @@ import './ResetPassword.css';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { Input, message } from 'antd';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate} from 'react-router-dom';
 
 const ResetPassword = () => {
   const { email } = useParams(); // Retrieve the email parameter from the URL
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate()
 
   const handlePasswordChange = (e) => {
     setNewPassword(e.target.value);
@@ -32,6 +33,7 @@ const ResetPassword = () => {
         newPassword,
       });
       message.success('Password reset successfully.');
+      navigate("/login")
       // Redirect user to login or another appropriate page after successful password reset
     } catch (error) {
       console.error('Error resetting password:', error);

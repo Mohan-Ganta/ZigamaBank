@@ -12,6 +12,7 @@ import {
 import CountUp from "react-countup";
 import * as XLSX from "xlsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Payroll = () => {
   const notify = () => {
@@ -36,6 +37,7 @@ const Payroll = () => {
   const [slideLeft, setSlideLeft] = useState(false);
   const [errormsg, setErrormsg] = useState();
   const [invalidotp, setInvalidOtp] = useState();
+  const navigate = useNavigate()
   const handleAccNoChange = (e) => {
     setErrormsg();
     setOrganisationAccountNo(e.target.value);
@@ -107,6 +109,9 @@ const Payroll = () => {
           .then((response) => {
             successRelease()
             console.log("Funds released successfully:", response.data);
+            setSlideLeft(false);
+            navigate("/dashboard")
+
           })
           .catch((error) => {
             console.error("Error releasing funds:", error);

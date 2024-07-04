@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './ForgotPassword.css';
 import { message } from 'antd';
 import axios from "axios"
+import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [messageText, setMessageText] = useState('');
+  const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,6 +17,7 @@ const ForgotPassword = () => {
       if (response) {
         message.success('Instructions to reset your password have been sent to your email.');
         setMessageText('Instructions to reset your password have been sent to your email.');
+        navigate("/login")
       } else {
         message.error('Failed to send email. Please try again later.');
         setMessageText('Failed to send email. Please try again later.');

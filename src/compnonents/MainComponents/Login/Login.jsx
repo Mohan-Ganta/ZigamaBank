@@ -25,7 +25,6 @@ const Login = () => {
         localStorage.setItem("Account_id", accountId);
         if (res.data.message === "Login successful") {
           setErrormsg();
-          alert("login Success")
           navigator("/dashboard");
         } else {
           setErrormsg(res.data.message);

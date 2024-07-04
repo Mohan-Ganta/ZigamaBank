@@ -3,6 +3,7 @@ import "./Fundtransfer.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Fundtransfer = () => {
   const [step, setStep] = useState(1);
   const [accountuser, setAccountUer] = useState(JSON.parse(localStorage.getItem("accountholder")));
@@ -13,7 +14,7 @@ const Fundtransfer = () => {
   const [errormsg, setErrormsg] = useState();
   const [senderError,setSenderError] = useState()
   const user = JSON.parse(localStorage.getItem("accountholder"));
-
+  const navigate = useNavigate()
   const handleCancel = () => {
     setStep(1);
   };
@@ -29,6 +30,7 @@ const Fundtransfer = () => {
       axios.post(url, trdata)
       .then(res=>{ 
         notify()
+        navigate("/dashboard")
       })
       .catch(err=>alert("transaction failed"))
       setErrormsg();
