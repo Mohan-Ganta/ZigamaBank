@@ -17,7 +17,7 @@ const Login = () => {
   const navigator = useNavigate();
   const handleLogin = (e) => {
     e.preventDefault();
-    const url = `http://localhoost:5000/users/login/${accountId}/${password}`;
+    const url = `https://zigma-backend-fp8b.onrender.com/users/login/${accountId}/${password}`;
     axios
       .get(url)
       .then((res) => {

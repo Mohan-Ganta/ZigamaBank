@@ -9,7 +9,7 @@ const ForgotPassword = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhoost:5000/api/clientlogin', {
+      const response = await fetch('https://zigma-backend-fp8b.onrender.com/api/clientlogin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
