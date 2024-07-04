@@ -4,10 +4,13 @@ import {  faSignOutAlt, faEnvelope, faCog, faQuestionCircle, faSearch } from '@f
 import styles from './Header.module.css';
 
 const Header = () => {
+  const accountHolderData = JSON.parse(
+    localStorage.getItem("accountholder")
+  );
   return (
     <div>
       <header className={styles.header}>
-        <h2>Welcome, UserName</h2>
+        <h2>Welcome, {`${accountHolder.FirstName} ${accountHolder.LastName} `}</h2>
         <div className={styles.searchBarContainer}>
           <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
           <input 
