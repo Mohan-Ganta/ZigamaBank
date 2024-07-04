@@ -1,132 +1,29 @@
-import React, { useState } from "react";
-import "./Transactions.css";
+import React, { useEffect, useState } from "react";
+import "./Transactions.css"; // Assuming your existing CSS file is imported here
 import { Pagination } from "antd";
+import { format } from "date-fns"; // Importing date-fns for date formatting
+import axios from "axios";
 
 function Transactions() {
-  const transactions = [{ 
-    date: '2024-06-01', 
-    txnId: 'TXN001', 
-    accountId: 'ACC001', 
-    amount: 100, 
-    txnType: 'Debit', 
-    status: 'Completed', 
-    availBalance: 500 
-  },
-  { 
-    date: '2024-06-02', 
-    txnId: 'TXN002', 
-    accountId: 'ACC002', 
-    amount: 200, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 700 
-  },
-  { 
-    date: '2024-06-03', 
-    txnId: 'TXN003', 
-    accountId: 'ACC001', 
-    amount: 150, 
-    txnType: 'Debit', 
-    status: 'Pending', 
-    availBalance: 550 
-  },
-  { 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },
-  { 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },{ 
-    date: '2024-06-04', 
-    txnId: 'TXN004', 
-    accountId: 'ACC002', 
-    amount: 300, 
-    txnType: 'Credit', 
-    status: 'Completed', 
-    availBalance: 850 
-  },
-  // Add more transactions as needed
-];
-  
-
+  const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const transactionsPerPage = 8;
 
+  useEffect(() => {
+    const accountHolderData = JSON.parse(localStorage.getItem("accountholder"));
+    axios
+      .get(`http://localhost:5000/users/getallusertransactions/${accountHolderData.Account_id}`)
+      .then((res) => {
+        setTransactions(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching transactions:", err);
+        setTransactions([]); // Set transactions to empty array on error
+      });
+  }, []);
+
+  // Calculate current transactions to display based on pagination
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
   const currentTransactions = transactions.slice(
@@ -134,49 +31,63 @@ function Transactions() {
     indexOfLastTransaction
   );
 
+  // Handle page change
   const handleChangePage = (page) => {
     setCurrentPage(page);
   };
 
-  return (
-    <div className="transactions-container">
-      <hr className="horizontal-line" />
-      <div className="table-container">
-      <table>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Transaction ID</th>
-      <th>Account ID</th>
-      <th>Debit/Credit</th>
-      <th>Amount</th>
-      <th>Status</th>
-      <th>Available Balance</th>
-    </tr>
-  </thead>
-  <tbody>
-    {currentTransactions.length > 0 ? (
-      currentTransactions.map((transaction, index) => (
-        <tr key={index}>
-          <td>{transaction.date}</td>
-          <td>{transaction.txnId}</td>
-          <td>{transaction.accountId}</td>
-          <td>{transaction.txnType}</td>
-          <td>{transaction.amount}</td>
-          <td>{transaction.status}</td>
-          <td>{transaction.availBalance}</td>
-        </tr>
-      ))
-    ) : (
-      <tr>
-        <td colSpan="7" className="no-transactions">
-          No transactions yet
-        </td>
-      </tr>
-    )}
-  </tbody>
-</table>
+  // Function to show transaction details modal
+  const showTransactionDetails = (transaction) => {
+    // Implement your modal opening logic here
+    console.log("Show details for transaction:", transaction);
+  };
 
+  // Function to close modal
+  const closeModal = () => {
+    // Implement your modal closing logic here
+    console.log("Close modal");
+  };
+
+  return (
+    <div className="recent-transactions">
+      <h2>Recent Transactions</h2>
+      <table className="recent-transactions">
+        <thead>
+          <tr>
+            <th>Tnx ID</th>
+            <th>Sender</th>
+            <th>Receiver</th>
+            <th>Amount</th>
+            <th>Tnx Type</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentTransactions.map((transaction, index) => (
+            <tr key={index}>
+              <td>TNX****{transaction._id.slice(-4)}</td>
+              <td>ZBKIN****{transaction.SenderAccountId.slice(-3)}</td>
+              <td>ZBKIN****{transaction.ReceiverAccountId.slice(-3)}</td>
+              <td>₹{transaction.Amount}</td>
+              <td>{transaction.TransactionType}</td>
+              <td className="transaction">
+                <div className={transaction.Status === "Success" ? "dot-green" : "dot-red"}></div>
+                {transaction.Status}
+              </td>
+              <td>{format(new Date(transaction.Date), "dd-MM-yyyy")}</td>
+              <td>
+                <button className="details-button" onClick={() => showTransactionDetails(transaction)}>
+                  More
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Pagination component */}
       <Pagination
         className="pagination"
         current={currentPage}
@@ -184,6 +95,15 @@ function Transactions() {
         total={transactions.length}
         onChange={handleChangePage}
       />
+
+      {/* Modal for transaction details */}
+      <div id="transactionModal" className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={() => closeModal()}>&times;</span>
+          <div className="transaction-details-modal">
+            {/* Modal content will be populated here */}
+          </div>
+        </div>
       </div>
     </div>
   );

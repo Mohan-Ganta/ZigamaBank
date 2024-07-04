@@ -30,6 +30,7 @@
   width: 400px;
 }
 .upload-container .upload-form-container{
+  color: black;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -53,6 +54,7 @@
   color: white;
 }
 .upload-container .form-group .label {
+  color: black;
   display: block;
   margin-bottom: 10px;
   font-weight: bold;

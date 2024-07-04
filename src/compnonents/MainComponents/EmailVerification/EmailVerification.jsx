@@ -19,7 +19,12 @@ const [receivedOtp,setReceivedOtp] = useState()
         autoClose: 1500,
       });
     };
-
+    const otpfail = () => {
+      toast.error('Error!', {
+        position: 'top-center',
+        autoClose: 1500,
+      });
+    };
     const otpSuccess = ()=>{
       toast.success("OTP verified",{
         position:'top-center',
@@ -52,7 +57,7 @@ const [receivedOtp,setReceivedOtp] = useState()
 
   const handleSendOtp = (e) => {
     e.preventDefault();
-    const url = `https://zigma-backend-fp8b.onrender.com/sendregisterotp/${localStorage.getItem("email")}/${localStorage.getItem("username")}`
+    const url = `http://localhost:5000/sendregisterotp/${localStorage.getItem("email")}/${localStorage.getItem("username")}`
     axios.get(url)
     .then(res=>{
       setReceivedOtp(res.data.otp)
@@ -77,7 +82,7 @@ const [receivedOtp,setReceivedOtp] = useState()
       onSubmission()
     }
     else
-      alert("paaaye")
+      otpfail()
   }
 
   return (

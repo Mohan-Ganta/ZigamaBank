@@ -22,7 +22,7 @@ alert("clicked")
 alert(otp)
     if (otp === String(otpreceived)) {
       alert("otp verified")
-      const url = "https://zigma-backend-fp8b.onrender.com/users/transaction";
+      const url = "http://localhost:5000/users/transaction";
       const trdata = {
         "SenderAccountId" : accountuser.Account_id,
         "ReceiverAccountId" : accountID,
@@ -57,7 +57,7 @@ alert(otp)
   
   const getUserName = async ()=>{
     console.log("user id is " ,accountID)
-    const userurl = `https://zigma-backend-fp8b.onrender.com/admin/useraccount/${accountID}`;
+    const userurl = `http://localhost:5000/admin/useraccount/${accountID}`;
   // await axios.get(userurl)
   //   .then(user=>setAccountUer(user.data))
   //   .catch(err=>{setSenderError("No User Found with that Account Number")})
@@ -68,7 +68,7 @@ alert(otp)
     const email = accountuser.Email;
     // const email = user.Email;
     const username = accountuser.FirstName;
-    const url = `https://zigma-backend-fp8b.onrender.com/sendpaymentotp/${email}/${username}/${amount}`
+    const url = `http://localhost:5000/sendpaymentotp/${email}/${username}/${amount}`
     axios.get(url)
     .then(res=>{
       setOtpreceived(res.data.otp)
@@ -129,18 +129,7 @@ alert(otp)
           <div className="details-card">
             <h3>Confirm Transaction Details</h3>
             <p>** OTP has been sent to your registered mail</p>
-            {/* <div className="form-item">
-              <label className="label" htmlFor="accountHolder">
-                Account Holder
-              </label>
-              <input
-                type="text"
-                id="accountHolder"
-                value={`${accountuser.FirstName} ${accountuser.LastName}`}
-                // value={`Koteshwar rao`}
-                disabled
-              />
-            </div> */}
+            
             <div className="form-item">
               <label className="label" htmlFor="Amount">
                 Amount

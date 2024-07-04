@@ -43,7 +43,7 @@ const Tabss = () => {
     };
     console.log("Data is almost ready to post ")
     console.log(data);
-    const url = `https://zigma-backend-fp8b.onrender.com/users/register`
+    const url = `http://localhost:5000/users/register`
     axios.post(url,data)
     .then(res=>{
       navigator("/registrationsuccess")

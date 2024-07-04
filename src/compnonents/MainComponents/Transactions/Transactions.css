@@ -1,8 +1,13 @@
 /* Transactions.css */
-
+.recent-transactions{
+  width: 90%;
+  padding: 30px;
+  margin: 0 auto;
+  
+}
 .transactions-container {
   width: 100%;
-  margin: 0 auto;
+  margin: 0 20px;
   
 }
 table {

@@ -13,51 +13,44 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-
-const transactions = [
-  {
-    id: 1,
-    senderAccountID: "6231415",
-    receiverAccountID: "10140715",
-    amount: "1,000.00",
-    transactionType: "Withdraw",
-    status: "Success",
-    dateCreated: "2021-07-14 15:56:12",
-  },
-  {
-    id: 2,
-    senderAccountID: "6231415",
-    receiverAccountID: "10140715",
-    amount: "1,000.00",
-    transactionType: "Deposit",
-    status: "Success",
-    dateCreated: "2021-07-14 15:55:54",
-  },
-  {
-    id: 3,
-    senderAccountID: "6231415",
-    receiverAccountID: "10140715",
-    amount: "1,000.00",
-    transactionType: "Withdraw",
-    status: "Success",
-    dateCreated: "2021-07-14 15:56:12",
-  },
-];
+import { Modal } from "antd";
 
 const UserDashboard = () => {
   const [currentDate, setCurrentDate] = useState("");
   const [accountHolder, setAccountHolder] = useState({});
-  const [summary, setSummary] = useState({
-    totalDebitedAmount: 0,
-    totalCreditedAmount: 0,
-  });
+  const [totalCreditAmount, setTotalCreditAmount] = useState(0);
+  const [totalDebitAmount, setTotalDebitAmount] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [transactions, setTransactions] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const openModal = () => {
+    document.getElementById("transactionModal").style.display = "block";
+  };
 
+  const closeModal = () => {
+    document.getElementById("transactionModal").style.display = "none";
+  };
+  const showTransactionDetails = (selectedTransaction) => {
+    const modalContent = document.querySelector(".transaction-details-modal");
+    modalContent.innerHTML = `
+      <p><strong>Tnx ID:</strong> TNX${selectedTransaction._id}</p>
+      <p><strong>Sender:</strong> ${selectedTransaction.SenderAccountId}</p>
+      <p><strong>Receiver:</strong> ${selectedTransaction.ReceiverAccountId}</p>
+      <p><strong>Amount:</strong> ₹${selectedTransaction.Amount}</p>
+      <p><strong>Tnx Type:</strong> ${selectedTransaction.TransactionType}</p>
+      <p><strong>Status:</strong> ${selectedTransaction.Status}</p>
+      <p><strong>Date:</strong> ${format(
+        new Date(selectedTransaction.Date),
+        "dd-MM-yyyy HH:mm:ss"
+      )}</p>
+    `;
+    openModal();
+  };
   useEffect(() => {
-    localStorage.setItem("loading","false")
     const now = new Date();
-    const formattedDate = format(now, "dd MMMM, EEEE");
+    const formattedDate = format(now, "dd-MM-yyyy");
     setCurrentDate(formattedDate);
 
     const fetchData = async () => {
@@ -70,13 +63,25 @@ const UserDashboard = () => {
           setAccountHolder(accountHolderData);
           setAvailableBalance(accountHolderData.Balance || 0);
 
-          // Fetch summary data from the /transactions/summary/:senderAccountId endpoint
           const response = await axios.get(
-            `https://zigma-backend-fp8b.onrender.com/users/transactions/summary/${accountHolderData.Account_id}`
+            `http://localhost:5000/users/transactions/${accountHolderData.Account_id}`
           );
-          setSummary(response.data);
-          const bal = await axios.get(`https://zigma-backend-fp8b.onrender.com/admin/useraccount/${accountHolderData.Account_id}`)
-          setAvailableBalance(bal.data.Balance)
+          setTotalCreditAmount(response.data.totalCreditAmount);
+          setTotalDebitAmount(response.data.totalDebitAmount);
+          const bal = await axios.get(
+            `http://localhost:5000/admin/useraccount/${accountHolderData.Account_id}`
+          );
+          setAvailableBalance(bal.data.Balance);
+
+          axios
+            .get(
+              `http://localhost:5000/users/getallusertransactions/${accountHolderData.Account_id}`
+            )
+            .then((res) => {
+              setTransactions(res.data);
+              console.log(res.data);
+            })
+            .catch((err) => setTransactions());
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -92,9 +97,10 @@ const UserDashboard = () => {
   const { state } = location;
   const { email, name, subject } = state || {};
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  const handleViewDetails = (transaction) => {
+    setSelectedTransaction(transaction);
+    setModalVisible(true);
+  };
 
   return (
     <div className="userdashboard-main-container">
@@ -103,7 +109,7 @@ const UserDashboard = () => {
         <div>
           <p className="info-card">{currentDate}</p>
           <p>AccountID: {accountHolder.Account_id}</p>
-          <p>Mobile: {accountHolder.MobileNumber}</p>
+          <p>Name: {`${accountHolder.FirstName} ${accountHolder.LastName} `}</p>
         </div>
         <div className="in-out-amount-cards">
           <div className="account-info-card">
@@ -121,7 +127,7 @@ const UserDashboard = () => {
               <span style={{ fontSize: "35px" }}>
                 <CountUp
                   start={0}
-                  end={0}
+                  end={totalCreditAmount}
                   duration={1.6}
                   separator=","
                 />
@@ -143,7 +149,7 @@ const UserDashboard = () => {
               <span style={{ fontSize: "35px" }}>
                 <CountUp
                   start={0}
-                  end={0}
+                  end={totalDebitAmount}
                   duration={2}
                   separator=","
                 />
@@ -209,31 +215,47 @@ const UserDashboard = () => {
               <th>Tnx Type</th>
               <th>Status</th>
               <th>Date</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td>{transaction.id}</td>
-                <td>{transaction.senderAccountID}</td>
-                <td>{transaction.receiverAccountID}</td>
-                <td>{transaction.amount}</td>
-                <td>{transaction.transactionType}</td>
-                <td className="transaction">
-                  <div
-                    className={`dot-${
-                      transaction.status.toLowerCase() === "success"
-                        ? "red"
-                        : "yellow"
-                    }`}
-                  ></div>
-                  {transaction.status}
-                </td>
-                <td>{transaction.dateCreated}</td>
-              </tr>
-            ))}
+            {transactions &&
+              transactions.map((transaction, index) => (
+                <tr key={index}>
+                  <td>TNX****{transaction._id.slice(-4)}</td>
+                  <td>ZBKIN****{transaction.SenderAccountId.slice(-3)}</td>
+                  <td>ZBKIN****{transaction.ReceiverAccountId.slice(-3)}</td>
+                  <td>₹{transaction.Amount}</td>
+                  <td>{transaction.TransactionType}</td>
+                  <td className="transaction">
+                    {transaction.Status === "Success" ? (
+                      <div className="dot-green"></div>
+                    ) : (
+                      <div className="dot-red"></div>
+                    )}
+                    {transaction.Status}
+                  </td>
+                  <td>{format(new Date(transaction.Date), "dd-MM-yyyy")}</td>
+                  <td>
+                    <button
+                      className="details-button"
+                      onClick={() => showTransactionDetails(transaction)}
+                    >
+                      More
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
+      </div>
+      <div id="transactionModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick={() => closeModal()}>
+            &times;
+          </span>
+          <div class="transaction-details-modal"></div>
+        </div>
       </div>
     </div>
   );
