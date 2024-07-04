@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <div>
       <header className={styles.header}>
-        <h2>Welcome, {`${accountHolder.FirstName} ${accountHolder.LastName} `}</h2>
+        <h2>Welcome, {`${accountHolderData.FirstName} ${accountHolderData.LastName} `}</h2>
         <div className={styles.searchBarContainer}>
           <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
           <input 
