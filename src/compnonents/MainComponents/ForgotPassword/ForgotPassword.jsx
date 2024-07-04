@@ -10,7 +10,7 @@ const ForgotPassword = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.get(`http://localhost:5000/users/sendresetpasswordmail/${email}`);
+      const response = await axios.get(`https://zigma-backend-fp8b.onrender.com/users/sendresetpasswordmail/${email}`);
 
       if (response) {
         message.success('Instructions to reset your password have been sent to your email.');

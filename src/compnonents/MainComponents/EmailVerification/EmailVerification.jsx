@@ -57,7 +57,7 @@ const [receivedOtp,setReceivedOtp] = useState()
 
   const handleSendOtp = (e) => {
     e.preventDefault();
-    const url = `http://localhost:5000/sendregisterotp/${localStorage.getItem("email")}/${localStorage.getItem("username")}`
+    const url = `https://zigma-backend-fp8b.onrender.com/sendregisterotp/${localStorage.getItem("email")}/${localStorage.getItem("username")}`
     axios.get(url)
     .then(res=>{
       setReceivedOtp(res.data.otp)

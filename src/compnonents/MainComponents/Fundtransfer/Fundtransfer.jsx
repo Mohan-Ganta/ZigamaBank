@@ -18,17 +18,14 @@ const Fundtransfer = () => {
     setStep(1);
   };
   const handleConfirmPay =() => {
-alert("clicked")
-alert(otp)
     if (otp === String(otpreceived)) {
       alert("otp verified")
-      const url = "http://localhost:5000/users/transaction";
+      const url = "https://zigma-backend-fp8b.onrender.com/users/transaction";
       const trdata = {
         "SenderAccountId" : accountuser.Account_id,
         "ReceiverAccountId" : accountID,
         "Amount" : amount
       }
-      alert("Are your sure ?")
       axios.post(url, trdata)
       .then(res=>{ 
         notify()
@@ -57,7 +54,7 @@ alert(otp)
   
   const getUserName = async ()=>{
     console.log("user id is " ,accountID)
-    const userurl = `http://localhost:5000/admin/useraccount/${accountID}`;
+    const userurl = `https://zigma-backend-fp8b.onrender.com/admin/useraccount/${accountID}`;
   // await axios.get(userurl)
   //   .then(user=>setAccountUer(user.data))
   //   .catch(err=>{setSenderError("No User Found with that Account Number")})
@@ -68,7 +65,7 @@ alert(otp)
     const email = accountuser.Email;
     // const email = user.Email;
     const username = accountuser.FirstName;
-    const url = `http://localhost:5000/sendpaymentotp/${email}/${username}/${amount}`
+    const url = `https://zigma-backend-fp8b.onrender.com/sendpaymentotp/${email}/${username}/${amount}`
     axios.get(url)
     .then(res=>{
       setOtpreceived(res.data.otp)
@@ -76,7 +73,6 @@ alert(otp)
   }
   const handleContinue = async (e) => {
     e.preventDefault();
-    // await getUserName()
     await sendOtpToSender()
     
     setStep(2);

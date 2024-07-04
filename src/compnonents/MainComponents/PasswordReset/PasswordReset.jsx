@@ -28,7 +28,7 @@ const ResetPassword = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/users/resetpassword/${email}`, {
+      await axios.put(`https://zigma-backend-fp8b.onrender.com/users/resetpassword/${email}`, {
         newPassword,
       });
       message.success('Password reset successfully.');

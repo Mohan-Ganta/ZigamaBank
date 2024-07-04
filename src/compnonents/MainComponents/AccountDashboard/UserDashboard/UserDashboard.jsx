@@ -8,7 +8,7 @@ const UserDashboard = () => {
   const [AccountData,setAccountdata] = useState() 
 
   useEffect(()=>{
-    const url = `http://localhost:5000/admin/useraccount/${localStorage.getItem("Account_id")}`
+    const url = `https://zigma-backend-fp8b.onrender.com/admin/useraccount/${localStorage.getItem("Account_id")}`
     axios.get(url)
     .then(res=>{
       console.log(res.data)

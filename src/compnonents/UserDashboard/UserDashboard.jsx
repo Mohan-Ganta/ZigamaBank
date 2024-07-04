@@ -64,18 +64,18 @@ const UserDashboard = () => {
           setAvailableBalance(accountHolderData.Balance || 0);
 
           const response = await axios.get(
-            `http://localhost:5000/users/transactions/${accountHolderData.Account_id}`
+            `https://zigma-backend-fp8b.onrender.com/users/transactions/${accountHolderData.Account_id}`
           );
           setTotalCreditAmount(response.data.totalCreditAmount);
           setTotalDebitAmount(response.data.totalDebitAmount);
           const bal = await axios.get(
-            `http://localhost:5000/admin/useraccount/${accountHolderData.Account_id}`
+            `https://zigma-backend-fp8b.onrender.com/admin/useraccount/${accountHolderData.Account_id}`
           );
           setAvailableBalance(bal.data.Balance);
 
           axios
             .get(
-              `http://localhost:5000/users/getallusertransactions/${accountHolderData.Account_id}`
+              `https://zigma-backend-fp8b.onrender.com/users/getallusertransactions/${accountHolderData.Account_id}`
             )
             .then((res) => {
               setTransactions(res.data);
