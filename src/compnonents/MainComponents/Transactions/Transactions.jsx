@@ -17,7 +17,7 @@ function Transactions() {
   useEffect(() => {
     const accountHolderData = JSON.parse(localStorage.getItem("accountholder"));
     axios
-      .get(`http://localhost:5000/users/getallusertransactions/${accountHolderData.Account_id}`)
+      .get(`https://zigma-backend-fp8b.onrender.com/users/getallusertransactions/${accountHolderData.Account_id}`)
       .then((res) => {
         setTransactions(res.data);
         setFilteredTransactions(res.data);
