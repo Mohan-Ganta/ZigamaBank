@@ -36,9 +36,9 @@ const Sidebar = () => {
       <div className={`sidebar-item ${activePath === '/transactions' ? 'active' : ''}`} onClick={() => handleNavigation('/transactions')}>
         <FontAwesomeIcon icon={faExchangeAlt} /> <span>Transactions</span>
       </div>
-      {/* <div className={`sidebar-item ${activePath === '/recharge' ? 'active' : ''}`} onClick={() => handleNavigation('/recharge')}>
+      <div className={`sidebar-item ${activePath === '/billpay' ? 'active' : ''}`} onClick={() => handleNavigation('/billpay')}>
         <FontAwesomeIcon icon={faUser} /> <span>Bill Pay</span>
-      </div> */}
+      </div>
       <div className={`sidebar-item ${activePath === '/payroll' ? 'active' : ''}`} onClick={() => handleNavigation('/payroll')}>
         <FontAwesomeIcon icon={faCreditCard} /> <span>Generate Payroll</span>
       </div>
