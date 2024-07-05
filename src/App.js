@@ -7,12 +7,13 @@ import Tabss from "./compnonents/MainComponents/TabSection/Tabss";
 import Login from "./compnonents/MainComponents/Login/Login";
 import Fundtransfer from "./compnonents/MainComponents/Fundtransfer/Fundtransfer";
 import Transactions from "./compnonents/MainComponents/Transactions/Transactions";
-import Recharge from './compnonents/MainComponents/Recharge/Recharge';
+import Recharge from './compnonents/MainComponents/BillPay/Recharge';
 import Payroll from './compnonents/MainComponents/Payroll/Payroll';
 import PasswordReset from "./compnonents/MainComponents/PasswordReset/PasswordReset";
 import ForgotPassword from './compnonents/MainComponents/ForgotPassword/ForgotPassword';
 import RegistrationConfromation from "./compnonents/MainComponents/ConfirmationComponents/RegistrationConfromation";
 import LandingPage from "./compnonents/Landing/LandingPage"
+import Rechargehome from './compnonents/MainComponents/BillPay/Rechargehome'
 
 export default function App() {
   const [isLoadingPage, setIsLoadingPage] = useState("false");
@@ -37,6 +38,7 @@ export default function App() {
               <Route path='/dashboard' element={<UserDashboard />} />
               <Route path='/fundtransfer' element={<Fundtransfer />} />
               <Route path='/transactions' element={<Transactions />} />
+              <Route path='/billpay' element={<Rechargehome />} />
               <Route path='/recharge' element={<Recharge />} />
               <Route path='/payroll' element={<Payroll />} />
               <Route path='/registrationsuccess' element={<RegistrationConfromation />} />
@@ -46,6 +48,7 @@ export default function App() {
           </div>
         </div>
       </BrowserRouter>
+    
     </div>
   );
 }
