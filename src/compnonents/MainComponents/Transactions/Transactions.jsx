@@ -1,56 +1,129 @@
 import React, { useEffect, useState } from "react";
-import "./Transactions.css"; // Assuming your existing CSS file is imported here
+import "./Transactions.css";
 import { Pagination } from "antd";
-import { format } from "date-fns"; // Importing date-fns for date formatting
+import { format } from "date-fns";
+import { subDays, subMonths, isWithinInterval } from "date-fns";
 import axios from "axios";
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [transactionType, setTransactionType] = useState("");
+  const [dateRange, setDateRange] = useState("");
+  const [accountId, setAccountId] = useState("");
   const transactionsPerPage = 8;
 
   useEffect(() => {
     const accountHolderData = JSON.parse(localStorage.getItem("accountholder"));
     axios
-      .get(`https://zigma-backend-fp8b.onrender.com/users/getallusertransactions/${accountHolderData.Account_id}`)
+      .get(`http://localhost:5000/users/getallusertransactions/${accountHolderData.Account_id}`)
       .then((res) => {
         setTransactions(res.data);
+        setFilteredTransactions(res.data);
         console.log(res.data);
       })
       .catch((err) => {
         console.error("Error fetching transactions:", err);
-        setTransactions([]); // Set transactions to empty array on error
+        setTransactions([]);
       });
   }, []);
 
-  // Calculate current transactions to display based on pagination
+  useEffect(() => {
+    applyFilters();
+  }, [transactionType, dateRange, accountId, transactions]);
+
+  const applyFilters = () => {
+    let filtered = transactions;
+
+    if (transactionType) {
+      filtered = filtered.filter(
+        (transaction) => transaction.TransactionType === transactionType
+      );
+    }
+
+    if (dateRange) {
+      const now = new Date();
+      if (dateRange === "lastWeek") {
+        filtered = filtered.filter((transaction) =>
+          isWithinInterval(new Date(transaction.Date), {
+            start: subDays(now, 7),
+            end: now,
+          })
+        );
+      } else if (dateRange === "lastMonth") {
+        filtered = filtered.filter((transaction) =>
+          isWithinInterval(new Date(transaction.Date), {
+            start: subMonths(now, 1),
+            end: now,
+          })
+        );
+      }
+    }
+
+    if (accountId) {
+      filtered = filtered.filter(
+        (transaction) =>
+          transaction.SenderAccountId === accountId ||
+          transaction.ReceiverAccountId === accountId
+      );
+    }
+
+    setFilteredTransactions(filtered);
+  };
+
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
-  const currentTransactions = transactions.slice(
+  const currentTransactions = filteredTransactions.slice(
     indexOfFirstTransaction,
     indexOfLastTransaction
   );
 
-  // Handle page change
   const handleChangePage = (page) => {
     setCurrentPage(page);
   };
 
-  // Function to show transaction details modal
   const showTransactionDetails = (transaction) => {
-    // Implement your modal opening logic here
     console.log("Show details for transaction:", transaction);
   };
 
-  // Function to close modal
   const closeModal = () => {
-    // Implement your modal closing logic here
     console.log("Close modal");
   };
 
   return (
     <div className="recent-transactions">
       <h2>Recent Transactions</h2>
+      <div className="filter-section">
+        <label>
+          Transaction Type:
+          <select value={transactionType} onChange={(e) => setTransactionType(e.target.value)}>
+            <option value="">All</option>
+            <option value="Credit">Credit</option>
+            <option value="Debit">Debit</option>
+          </select>
+        </label>
+
+        <label>
+          Date Range:
+          <select value={dateRange} onChange={(e) => setDateRange(e.target.value)}>
+            <option value="">All</option>
+            <option value="lastWeek">Last Week</option>
+            <option value="lastMonth">Last Month</option>
+          </select>
+        </label>
+
+        <label>
+          Account ID:
+          <input
+            type="text"
+            value={accountId}
+            onChange={(e) => setAccountId(e.target.value)}
+            placeholder="Enter Account ID"
+          />
+        </label>
+      </div>
+
       <table className="recent-transactions">
         <thead>
           <tr>
@@ -87,21 +160,18 @@ function Transactions() {
         </tbody>
       </table>
 
-      {/* Pagination component */}
       <Pagination
         className="pagination"
         current={currentPage}
         pageSize={transactionsPerPage}
-        total={transactions.length}
+        total={filteredTransactions.length}
         onChange={handleChangePage}
       />
 
-      {/* Modal for transaction details */}
       <div id="transactionModal" className="modal">
         <div className="modal-content">
           <span className="close" onClick={() => closeModal()}>&times;</span>
           <div className="transaction-details-modal">
-            {/* Modal content will be populated here */}
           </div>
         </div>
       </div>

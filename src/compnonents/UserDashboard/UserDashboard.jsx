@@ -11,9 +11,9 @@ import {
   faBell,
   faCreditCard,
 } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 
 const UserDashboard = () => {
   const [currentDate, setCurrentDate] = useState("");
@@ -25,29 +25,17 @@ const UserDashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
-  const openModal = () => {
-    document.getElementById("transactionModal").style.display = "block";
+
+  const navigate = useNavigate()
+  const showTransactionDetails = (transaction) => {
+    setSelectedTransaction(transaction);
+    setModalVisible(true);
   };
 
   const closeModal = () => {
-    document.getElementById("transactionModal").style.display = "none";
+    setModalVisible(false);
   };
-  const showTransactionDetails = (selectedTransaction) => {
-    const modalContent = document.querySelector(".transaction-details-modal");
-    modalContent.innerHTML = `
-      <p><strong>Tnx ID:</strong> TNX${selectedTransaction._id}</p>
-      <p><strong>Sender:</strong> ${selectedTransaction.SenderAccountId}</p>
-      <p><strong>Receiver:</strong> ${selectedTransaction.ReceiverAccountId}</p>
-      <p><strong>Amount:</strong> ₹${selectedTransaction.Amount}</p>
-      <p><strong>Tnx Type:</strong> ${selectedTransaction.TransactionType}</p>
-      <p><strong>Status:</strong> ${selectedTransaction.Status}</p>
-      <p><strong>Date:</strong> ${format(
-        new Date(selectedTransaction.Date),
-        "dd-MM-yyyy HH:mm:ss"
-      )}</p>
-    `;
-    openModal();
-  };
+
   useEffect(() => {
     const now = new Date();
     const formattedDate = format(now, "dd-MM-yyyy");
@@ -55,7 +43,6 @@ const UserDashboard = () => {
 
     const fetchData = async () => {
       try {
-        // Fetch account holder data from localStorage
         const accountHolderData = JSON.parse(
           localStorage.getItem("accountholder")
         );
@@ -64,24 +51,24 @@ const UserDashboard = () => {
           setAvailableBalance(accountHolderData.Balance || 0);
 
           const response = await axios.get(
-            `https://zigma-backend-fp8b.onrender.com/users/transactions/${accountHolderData.Account_id}`
+            `http://localhost:5000/users/transactions/${accountHolderData.Account_id}`
           );
           setTotalCreditAmount(response.data.totalCreditAmount);
           setTotalDebitAmount(response.data.totalDebitAmount);
           const bal = await axios.get(
-            `https://zigma-backend-fp8b.onrender.com/admin/useraccount/${accountHolderData.Account_id}`
+            `http://localhost:5000/admin/useraccount/${accountHolderData.Account_id}`
           );
           setAvailableBalance(bal.data.Balance);
 
           axios
             .get(
-              `https://zigma-backend-fp8b.onrender.com/users/getallusertransactions/${accountHolderData.Account_id}`
+              `http://localhost:5000/users/getallusertransactions/${accountHolderData.Account_id}`
             )
             .then((res) => {
               setTransactions(res.data);
               console.log(res.data);
             })
-            .catch((err) => setTransactions());
+            .catch((err) => setTransactions([]));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -97,9 +84,8 @@ const UserDashboard = () => {
   const { state } = location;
   const { email, name, subject } = state || {};
 
-  const handleViewDetails = (transaction) => {
-    setSelectedTransaction(transaction);
-    setModalVisible(true);
+  const handleViewMore = () => {
+    navigate("/transactions");
   };
 
   return (
@@ -109,7 +95,7 @@ const UserDashboard = () => {
         <div>
           <p className="info-card">{currentDate}</p>
           <p>AccountID: {accountHolder.Account_id}</p>
-          <p>Name: {`${accountHolder.FirstName} ${accountHolder.LastName} `}</p>
+          <p>Name: {`${accountHolder.FirstName} ${accountHolder.LastName}`}</p>
         </div>
         <div className="in-out-amount-cards">
           <div className="account-info-card">
@@ -177,7 +163,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-      <div className="quick-actions">
+      {/* <div className="quick-actions">
         <div className="quick-action">
           <FontAwesomeIcon
             style={{ fontSize: "30px" }}
@@ -202,9 +188,12 @@ const UserDashboard = () => {
         <div className="quick-action">
           <FontAwesomeIcon style={{ fontSize: "30px" }} icon={faCreditCard} />
         </div>
-      </div>
+      </div> */}
       <div className="recent-transactions">
         <h2>Recent Transactions</h2>
+        <Button type="link" onClick={handleViewMore}>
+          Show More
+        </Button>
         <table className="recent-transactions">
           <thead>
             <tr>
@@ -220,7 +209,7 @@ const UserDashboard = () => {
           </thead>
           <tbody>
             {transactions &&
-              transactions.map((transaction, index) => (
+              transactions.slice(0, 3).map((transaction, index) => (
                 <tr key={index}>
                   <td>TNX****{transaction._id.slice(-4)}</td>
                   <td>ZBKIN****{transaction.SenderAccountId.slice(-3)}</td>
@@ -249,14 +238,31 @@ const UserDashboard = () => {
           </tbody>
         </table>
       </div>
-      <div id="transactionModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick={() => closeModal()}>
-            &times;
-          </span>
-          <div class="transaction-details-modal"></div>
-        </div>
-      </div>
+      <Modal
+        title="Transaction Details"
+        visible={modalVisible}
+        onCancel={closeModal}
+        footer={[
+          <Button key="close" onClick={closeModal}>
+            Close
+          </Button>,
+        ]}
+      >
+        {selectedTransaction && (
+          <div className="transaction-details-modal">
+            <p><strong>Tnx ID:</strong> TNX{selectedTransaction._id}</p>
+            <p><strong>Sender:</strong> {selectedTransaction.SenderAccountId}</p>
+            <p><strong>Receiver:</strong> {selectedTransaction.ReceiverAccountId}</p>
+            <p><strong>Amount:</strong> ₹{selectedTransaction.Amount}</p>
+            <p><strong>Tnx Type:</strong> {selectedTransaction.TransactionType}</p>
+            <p><strong>Status:</strong> {selectedTransaction.Status}</p>
+            <p><strong>Date:</strong> {format(
+              new Date(selectedTransaction.Date),
+              "dd-MM-yyyy HH:mm:ss"
+            )}</p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
